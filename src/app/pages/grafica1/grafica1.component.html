@@ -1,1 +1,31 @@
-<p>grafica1 works!</p>
+<div class="row">
+  <div class="col-6">
+    <app-doughnut
+      [title]="'Ventas de mascarillas'"
+      [colors]="['#08D9D6', '#252A34', '#FF2E63']"
+      [labels]="['N99', 'N95', 'N100']"
+      [data]="[100, 250, 300]"
+    ></app-doughnut>
+  </div>
+  <div class="col-6">
+    <app-doughnut></app-doughnut>
+  </div>
+</div>
+<div class="row">
+  <div class="col-6">
+    <app-doughnut
+      [title]="'Ventas de alcohol'"
+      [colors]="['#BAD7E9', '#FCFFE7', '#EB455F']"
+      [labels]="['Marca A 70°', 'Marca B 96°', 'Marca C 70°']"
+      [data]="[150, 20, 30]"
+    ></app-doughnut>
+  </div>
+  <div class="col-6">
+    <app-doughnut
+      [title]="'Ventas de alcohol'"
+      [colors]="['#FFD59E', '#F9FFA4', '#B4FF9F']"
+      [labels]="['Marca A 70°', 'Marca B 96°', 'Marca C 70°']"
+      [data]="[150, 20, 30]"
+    ></app-doughnut>
+  </div>
+</div>
