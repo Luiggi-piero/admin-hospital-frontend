@@ -23,11 +23,11 @@ export class LoginComponent implements AfterViewInit {
   public formSubmitted = false;
 
   public loginForm: FormGroup = new FormGroup({
-    email: new FormControl(localStorage.getItem('email') || '', [
+    email: new FormControl(localStorage.getItem('email') || 'lucas2@gmail.com', [
       Validators.required,
       Validators.email,
     ]),
-    password: new FormControl('123456', Validators.required),
+    password: new FormControl('123321', Validators.required),
     remember: new FormControl(this.getRemember()),
   });
 
@@ -42,11 +42,14 @@ export class LoginComponent implements AfterViewInit {
   }
 
   googleInit() {
+    
     google.accounts.id.initialize({
       client_id:
         '904933191644-inv3r28er0j150pbo13m4h38utnamfvh.apps.googleusercontent.com',
       callback: (response: any) => this.handleCredentialResponse(response),
     });
+
+
     google.accounts.id.renderButton(
       // document.getElementById("buttonDiv"),
       this.googleBtn.nativeElement,
@@ -64,7 +67,6 @@ export class LoginComponent implements AfterViewInit {
   }
 
   login() {
-    console.log(this.loginForm.value);
     this.usuarioService.login(this.loginForm.value).subscribe({
       next: (res) => {
         if (this.loginForm.get('remember')?.value) {
