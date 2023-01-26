@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { LoginForm } from '../interfaces/login-form.interface';
+import { CargarUsuarios } from '../interfaces/cargar-usuarios.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { Usuario } from '../models/usuario.model';
 
@@ -26,17 +27,23 @@ export class UsuarioService {
     this.googleInit();
   }
 
-
-  googleInit(){
+  googleInit() {
     google.accounts.id.initialize({
       client_id:
         '904933191644-inv3r28er0j150pbo13m4h38utnamfvh.apps.googleusercontent.com',
     });
   }
 
-
   get token(): string {
     return localStorage.getItem('token') ?? '';
+  }
+
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token,
+      },
+    };
   }
 
   crearUsuario(data: RegisterForm) {
@@ -63,18 +70,17 @@ export class UsuarioService {
     );
   }
 
-  actualizarPerfil(data: { nombre: string; email: string, role: string }) {
-
+  actualizarPerfil(data: { nombre: string; email: string; role: string }) {
     data = {
       ...data,
-      role: this.usuario.role
-    }
+      role: this.usuario.role,
+    };
 
-    return this.httpClient.put(`${base_url}/usuarios/${this.usuario.uid}`, data, {
-      headers: {
-        'x-token': this.token,
-      },
-    });
+    return this.httpClient.put(
+      `${base_url}/usuarios/${this.usuario.uid}`,
+      data,
+      this.headers
+    );
   }
 
   validarToken(): Observable<boolean> {
@@ -111,11 +117,55 @@ export class UsuarioService {
     localStorage.removeItem('token');
 
     if (this.usuario.google) {
-      google.accounts.id.revoke('luiggiyantas@gmail.com', () => {
+      google.accounts.id.revoke(this.usuario.email, () => {
         this.ngZone.run(() => {
           this.router.navigateByUrl('/login');
         });
       });
     } else this.router.navigateByUrl('/login');
+  }
+
+  cargarUsuarios(desde: number = 0) {
+    // http://localhost:3000/api/usuarios?desde=0
+
+    const url = `${base_url}/usuarios?desde=${desde}`;
+
+    return this.httpClient.get<CargarUsuarios>(url, this.headers).pipe(
+      // delay(5000),
+      map((res) => {
+        const usuarios = res.usuarios.map(
+          (user) =>
+            new Usuario(
+              user.nombre,
+              user.email,
+              '',
+              user.img,
+              user.google,
+              user.role,
+              user.uid
+            )
+        );
+
+        return {
+          total: res.total,
+          usuarios,
+        };
+      })
+    );
+  }
+
+  eliminarUsuario(id: string) {
+    // http://localhost:3000/api/usuarios/63b5b17c31f8f63fefa63e83
+    const url = `${base_url}/usuarios/${id}`;
+    return this.httpClient.delete(url, this.headers);
+  }
+
+  guardarUsuario(usuario: Usuario) {
+
+    return this.httpClient.put(
+      `${base_url}/usuarios/${usuario.uid}`,
+      usuario,
+      this.headers
+    );
   }
 }

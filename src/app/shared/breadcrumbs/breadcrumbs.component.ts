@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivationEnd, Router } from '@angular/router';
-import { filter, map, Observable, Subscription } from 'rxjs';
+import { filter, map, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-breadcrumbs',
