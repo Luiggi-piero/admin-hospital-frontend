@@ -1,29 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 import { Usuario } from 'src/app/models/usuario.model';
+
 import { BusquedasService } from 'src/app/services/busquedas.service';
+import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import Swal from 'sweetalert2';
+import { delay, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
   styles: [],
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
   public totalUsuarios: number = 0;
   public usuarios: Usuario[] = [];
   public usuariosTemp: Usuario[] = [];
   public desde: number = 0;
   public cargando: boolean = true;
 
+  public imgSubs: Subscription;
+
   constructor(
     private usuarioService: UsuarioService,
-    private busquedasService: BusquedasService
+    private busquedasService: BusquedasService,
+    private modalImagenService: ModalImagenService
   ) {}
 
   ngOnInit(): void {
     this.cargarUsuarios();
+
+    this.imgSubs = this.modalImagenService.nuevaImagen
+      .pipe(delay(100))
+      .subscribe((resp) => this.cargarUsuarios());
   }
 
   cargarUsuarios() {
@@ -56,7 +66,6 @@ export class UsuariosComponent implements OnInit {
     }
 
     this.busquedasService.buscar('usuarios', termino).subscribe((resp) => {
-      console.log(resp);
       this.usuarios = resp;
     });
 
@@ -64,8 +73,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   borrar(id: string) {
-
-    if(id === this.usuarioService.usuario.uid){
+    if (id === this.usuarioService.usuario.uid) {
       Swal.fire('Error', 'No es posible borrarse así mismo', 'error');
       return;
     }
@@ -93,7 +101,17 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  cambiarRol(user: Usuario){
-    this.usuarioService.guardarUsuario(user).subscribe( resp => {console.log(resp)});
+  cambiarRol(user: Usuario) {
+    this.usuarioService.guardarUsuario(user).subscribe((resp) => {
+      console.log(resp);
+    });
+  }
+
+  abrirModal(usuario: Usuario) {
+    this.modalImagenService.abrirModal('usuarios', usuario.uid, usuario.img);
+  }
+
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
   }
 }

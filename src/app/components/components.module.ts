@@ -9,8 +9,12 @@ import { DoughnutComponent } from './doughnut/doughnut.component';
 import { ModalImagenComponent } from './modal-imagen/modal-imagen.component';
 
 @NgModule({
-  declarations: [IncrementadorComponent, DoughnutComponent, ModalImagenComponent],
-  exports: [IncrementadorComponent, DoughnutComponent],
+  declarations: [
+    IncrementadorComponent,
+    DoughnutComponent,
+    ModalImagenComponent,
+  ],
+  exports: [IncrementadorComponent, DoughnutComponent, ModalImagenComponent],
   imports: [CommonModule, FormsModule, NgChartsModule],
 })
 export class ComponentsModule {}

@@ -48,12 +48,21 @@
             <tbody>
               <tr *ngFor="let usuario of usuarios">
                 <td class="text-center">
-                  <img [src]="usuario.imagenUrl" alt="imagen" class="avatar" />
+                  <img
+                    [src]="usuario.imagenUrl"
+                    (click)="abrirModal(usuario)"
+                    alt="imagen"
+                    class="avatar cursor"
+                  />
                 </td>
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.nombre }}</td>
                 <td>
-                  <select class="form-control" [(ngModel)]="usuario.role" (change)="cambiarRol(usuario)">
+                  <select
+                    class="form-control"
+                    [(ngModel)]="usuario.role"
+                    (change)="cambiarRol(usuario)"
+                  >
                     <option value="ADMIN_ROLE">Admin</option>
                     <option value="USER_ROLE">User</option>
                   </select>
@@ -82,7 +91,10 @@
           </table>
 
           <div *ngIf="txtTermino.value.length === 0">
-            <button (click)="cambiarPagina(-5)" class="btn btn-outline-secondary">
+            <button
+              (click)="cambiarPagina(-5)"
+              class="btn btn-outline-secondary"
+            >
               Anterior
             </button>
             &nbsp;
