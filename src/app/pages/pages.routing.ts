@@ -1,17 +1,19 @@
-import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../guards/auth.guard';
-import { PagesComponent } from './pages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProgressComponent } from './progress/progress.component';
-import { Grafica1Component } from './grafica1/grafica1.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { Grafica1Component } from './grafica1/grafica1.component';
+import { PagesComponent } from './pages.component';
+import { PerfilComponent } from './perfil/perfil.component';
+import { ProgressComponent } from './progress/progress.component';
 import { PromesaComponent } from './promesa/promesa.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
-import { PerfilComponent } from './perfil/perfil.component';
 
 // Mantenimientos
+import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 
 
@@ -31,7 +33,9 @@ const routes: Routes = [
 
 
           // Mantenimientos
-          { path: 'usuarios', component: UsuariosComponent, data:{title:'Usuarios'}  },
+          { path: 'usuarios', component: UsuariosComponent, data:{title:'Administración de usuarios'}  },
+          { path: 'medicos', component: MedicosComponent, data:{title:'Administración de médicos'}  },
+          { path: 'hospitales', component: HospitalesComponent, data:{title:'Administración de hospitales'}  },
         ],
       },
 ];
