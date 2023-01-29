@@ -23,10 +23,20 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Lista de hospitales</h4>
-        <h6 class="card-subtitle">
-          Hospitales registrados ({{ hospitales.length }})
-        </h6>
+
+        <div class="row">
+          <div class="col-8">
+            <h4 class="card-title">Lista de hospitales</h4>
+            <h6 class="card-subtitle">
+              Hospitales registrados ({{ hospitales.length }})
+            </h6>
+          </div>
+          <div class="col">
+            <div class="text-right">
+              <button (click)="abrirSweetAlert()" class="btn btn-primary">Crear hospital</button>
+            </div>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -43,6 +53,7 @@
                     [src]="hospital.img | imagen : 'hospitales'"
                     class="avatar cursor"
                     alt="img"
+                    (click)="abrirModal(hospital)"
                   />
                 </td>
                 <td>
@@ -54,16 +65,18 @@
                 </td>
                 <td class="text-nowrap text-center">
                   <a
-                    href="#"
+                    (click)="guardarCambios(hospital)"
                     data-toggle="tooltip"
                     data-original-title="Guardar cambios"
+                    class="cursor"
                   >
-                    <i class="fa fa-pencil text-inverse m-r-10"></i>
+                    <i class="fa fa-save text-inverse m-r-10"></i>
                   </a>
                   <a
-                    href="#"
+                    (click)="eliminarHospital(hospital)"
                     data-toggle="tooltip"
                     data-original-title="Borrar"
+                    class="cursor"
                   >
                     <i class="fa fa-close text-danger"></i>
                   </a>

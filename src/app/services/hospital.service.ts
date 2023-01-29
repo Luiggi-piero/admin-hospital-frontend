@@ -26,10 +26,27 @@ export class HospitalService {
   }
 
   cargarHospitales() {
-    // http://localhost:3000/api/hospitales
     const url = `${base_url}/hospitales`;
     return this.http
       .get(url, this.headers)
-      .pipe(map((resp: {ok: boolean, hospitales: Hospital[]}) => resp.hospitales));
+      .pipe(
+        map((resp: { ok: boolean; hospitales: Hospital[] }) => resp.hospitales)
+      );
+  }
+
+  crearHospital(nombre: string) {
+    const url = `${base_url}/hospitales`;
+    return this.http.post(url, { nombre }, this.headers);
+    // .pipe(map((resp: { ok: boolean; hospital: Hospital }) => resp.hospital));
+  }
+
+  actualizarHospital(id: string, nombre: string) {
+    const url = `${base_url}/hospitales/${id}`;
+    return this.http.put(url, { nombre }, this.headers);
+  }
+
+  borrarHospital(id: string) {
+    const url = `${base_url}/hospitales/${id}`;
+    return this.http.delete(url, this.headers);
   }
 }
