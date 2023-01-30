@@ -2,7 +2,13 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input type="text" class="form-control" placeholder="Buscar..." />
+        <input
+          #txtTermino
+          type="text"
+          class="form-control"
+          placeholder="Buscar..."
+          (keyup)="buscar(txtTermino.value)"
+        />
       </div>
     </div>
   </div>
@@ -23,7 +29,6 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-
         <div class="row">
           <div class="col-8">
             <h4 class="card-title">Lista de hospitales</h4>
@@ -33,7 +38,9 @@
           </div>
           <div class="col">
             <div class="text-right">
-              <button (click)="abrirSweetAlert()" class="btn btn-primary">Crear hospital</button>
+              <button (click)="abrirSweetAlert()" class="btn btn-primary">
+                Crear hospital
+              </button>
             </div>
           </div>
         </div>

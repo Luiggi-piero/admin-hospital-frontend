@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 
 import { HospitalService } from 'src/app/services/hospital.service';
 import { ModalImagenService } from '../../../services/modal-imagen.service';
+import { BusquedasService } from 'src/app/services/busquedas.service';
 
 import { Hospital } from 'src/app/models/hospital.model';
 
@@ -16,12 +17,14 @@ import { Hospital } from 'src/app/models/hospital.model';
 export class HospitalesComponent implements OnInit, OnDestroy {
   public hospitales: Hospital[] = [];
   public cargando: boolean = true;
+  public hospitalesTemp: Hospital[] = [];
 
   public imgSubs: Subscription;
 
   constructor(
     private hospitalService: HospitalService,
-    private modalImagenService: ModalImagenService
+    private modalImagenService: ModalImagenService,
+    private busquedasService: BusquedasService
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +43,7 @@ export class HospitalesComponent implements OnInit, OnDestroy {
     this.hospitalService.cargarHospitales().subscribe((hospitales) => {
       this.cargando = false;
       this.hospitales = hospitales;
+      this.hospitalesTemp = hospitales;
     });
   }
 
@@ -73,7 +77,8 @@ export class HospitalesComponent implements OnInit, OnDestroy {
       showCancelButton: true,
     });
 
-    if (value.trim().length > 0) {
+    if (!value) return;
+    else if (value.trim().length > 0) {
       this.hospitalService.crearHospital(value).subscribe((resp: any) => {
         this.hospitales.push(resp.hospital);
       });
@@ -86,5 +91,16 @@ export class HospitalesComponent implements OnInit, OnDestroy {
       hospital._id,
       hospital.img
     );
+  }
+
+  buscar(termino: string) {
+    if (termino.length === 0) {
+      return (this.hospitales = this.hospitalesTemp);
+    }
+    this.busquedasService.buscar('hospitales', termino).subscribe((resp) => {
+      this.hospitales = resp;
+    });
+
+    return true;
   }
 }
