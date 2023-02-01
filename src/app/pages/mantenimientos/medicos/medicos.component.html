@@ -32,7 +32,7 @@
         <div class="row">
           <div class="col-8">
             <h4 class="card-title">Lista de médicos</h4>
-            <h6 class="card-subtitle">Médicos registrados</h6>
+            <h6 class="card-subtitle">Médicos registrados ({{medicos.length}})</h6>
           </div>
           <div class="col text-right">
             <a routerLink="/dashboard/medico/nuevo" class="btn btn-primary">Crear médico</a>
@@ -69,9 +69,10 @@
                     <i class="fa fa-pencil text-inverse m-r-10"></i>
                   </a>
                   <a
-                    href="#"
+                    class="cursor"
                     data-toggle="tooltip"
                     data-original-title="Borrar"
+                    (click)="borrarMedico(medico)"
                   >
                     <i class="fa fa-close text-danger"></i>
                   </a>

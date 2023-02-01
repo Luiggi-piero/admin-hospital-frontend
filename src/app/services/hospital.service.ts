@@ -37,7 +37,6 @@ export class HospitalService {
   crearHospital(nombre: string) {
     const url = `${base_url}/hospitales`;
     return this.http.post(url, { nombre }, this.headers);
-    // .pipe(map((resp: { ok: boolean; hospital: Hospital }) => resp.hospital));
   }
 
   actualizarHospital(id: string, nombre: string) {

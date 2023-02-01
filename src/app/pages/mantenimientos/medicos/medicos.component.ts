@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 import { Medico } from 'src/app/models/medico.model';
-import { BusquedasService } from 'src/app/services/busquedas.service';
 
+import { BusquedasService } from 'src/app/services/busquedas.service';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
-import Swal from 'sweetalert2';
 import { MedicoService } from '../../../services/medico.service';
 
 @Component({
@@ -61,5 +61,25 @@ export class MedicosComponent implements OnInit, OnDestroy {
       });
 
     return true;
+  }
+
+  borrarMedico(medico: Medico) {
+    Swal.fire({
+      title: '¿Está seguro de borrar?',
+      text: medico.nombre,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#6B728E',
+      confirmButtonText: 'Si, borrar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.medicoService.borrarMedico(medico._id).subscribe((resp) => {
+          this.cargarMedicos();
+          Swal.fire('Médico borrado', medico.nombre, 'success');
+        });
+      }
+    });
   }
 }
