@@ -46,7 +46,7 @@ export class BusquedasService {
     return resultados;
   }
 
-  private transformarMedicos(resultados: any[]): Medico[]{
+  private transformarMedicos(resultados: any[]): Medico[] {
     return resultados;
   }
 
@@ -66,6 +66,28 @@ export class BusquedasService {
             return [];
         }
       })
+    );
+  }
+
+  busquedaTotal(termino: string) {
+    const url = `${base_url}/todo/${termino}`;
+
+    return this.http.get(url, this.headers).pipe(
+      map(
+        (resp: {
+          ok: boolean;
+          hospitales: Hospital[];
+          medicos: Medico[];
+          usuarios: Usuario[];
+        }) => {
+          const { hospitales, medicos, usuarios } = resp;
+          return {
+            hospitales,
+            medicos,
+            usuarios,
+          };
+        }
+      )
     );
   }
 }
