@@ -30,7 +30,6 @@ export class BusquedaComponent implements OnInit {
 
   busquedaTotal(termino: string) {
     this.busquedasService.busquedaTotal(termino).subscribe((resp) => {
-      console.log(resp);
       this.medicos = resp.medicos;
       this.hospitales = resp.hospitales;
       this.usuarios = resp.usuarios;
